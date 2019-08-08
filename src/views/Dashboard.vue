@@ -6,7 +6,6 @@
             <h6>Your age is {{ user.age}}; </h6>
             <h6>Your city is {{user.city}};</h6>
             <h6>Your job is {{user.job}};</h6>
-
         </div>
         
         <form @submit.prevent="submitForm">
@@ -50,9 +49,11 @@ export default {
             return !this.userData ? false : this.userData;
         }
     },
+
     created(){
         this.getUserData();
     },
+
     methods: {
         ...mapActions(["fetchUser", "updateUser"]),
         submitForm(){
@@ -83,4 +84,5 @@ export default {
     max-width: 30rem;
 }
 </style>
+
 
