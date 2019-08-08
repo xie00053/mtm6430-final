@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import { mapState, mapActions, mapGetters} from "vuex";
 // set the error message as global function
 export default {
@@ -51,6 +54,7 @@ export default {
 
 #nav {
     padding: 30px;
+    text-align: center;
 }
 
 #nav a {
