@@ -14,6 +14,7 @@ export default new Vuex.Store({
     error: "",
     user:null,
   },
+
   mutations: {
     AUTH_USER(state, userData) {
       state.idToken = userData.token;
@@ -34,6 +35,8 @@ export default new Vuex.Store({
       state.user = user;
     }
   },
+
+  
   actions: {
     signUp({commit, dispatch}, authData ) {
       axiosAuth
@@ -78,7 +81,8 @@ export default new Vuex.Store({
           console.log(error.response.data.error.message);
           commit("SET_ERROR", error.response.data.error.message);
         });
-      },
+      }, // close Sign Up
+
 
       signIn({ commit, dispatch }, authData) {
         axiosAuth
@@ -97,22 +101,22 @@ export default new Vuex.Store({
               userId: res.data.localId
             });
 
-          // Local Storage
-          const now = new Date();
-          const expirationDate = new Date(
-            now.getTime() + res.data.expiresIn * 1000
-          );
+            // Local Storage
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + res.data.expiresIn * 1000
+            );
 
-          localStorage.setItem("token",res.data.idToken)
-          localStorage.setItem("userId",res.data.localId)
-          localStorage.setItem("userId","expirationDate", expirationDate);
-          // store the user email in the localstorage, which is the common item between authendiacation and database
-          localStorage.setItem("userEmail",authData.email);
+            localStorage.setItem("token",res.data.idToken)
+            localStorage.setItem("userId",res.data.localId)
+            localStorage.setItem("userId","expirationDate", expirationDate);
+            // store the user email in the localstorage, which is the common item between authendiacation and database
+            localStorage.setItem("userEmail",authData.email);
 
-          router.push({ name: "dashboard" });
+            router.push({ name: "dashboard" });
 
-          // set the logout timer to automatically call logout action when token expires
-          dispatch("setLogoutTimer", res.data.expiresIn);          
+            // set the logout timer to automatically call logout action when token expires
+            dispatch("setLogoutTimer", res.data.expiresIn);          
           })
           .catch(error => {
             console.log(error.response.data.error.message);
@@ -146,7 +150,9 @@ export default new Vuex.Store({
       },
 
       // 检测如果超时，自动退出，如果没有，继续get data，保持login
+      // Allow users to stay logged in when refreshing the app.
       autoLogin({commit}) {
+        // get the token and expiration from the localStorage
         const token =localStorage.getItem('token');
         const expirationDate =localStorage.getItem('expirationDate');
         const userId =localStorage.getItem('userId');
@@ -158,8 +164,7 @@ export default new Vuex.Store({
           commit("AUTH_USER", {
             token:token,
             userId:userId
-          });
-        
+          });        
       },
 
       // when the user login, the data will store in the database, the email and password also store in the authentication
@@ -176,7 +181,8 @@ export default new Vuex.Store({
         .then(res => console.log(res))
         .catch(error => console.log(error.message));        
       },
-
+      
+    // fetch the user information from the database this action is dispatched from the Dashboard
       fetchUser({commit,state}, userEmail) {
         if(!state.idToken) {
           return;
