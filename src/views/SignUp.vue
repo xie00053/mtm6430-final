@@ -1,10 +1,9 @@
 <template>
     <div>
-
-        
-        
+        <!-- Sign Up Form -->
         <form @submit.prevent="onSubmit">
             <h1 class="card-header">Sign Up</h1>
+
             <div class="row">
                 <div class="col-6">
                     <label for="name">Name</label>
@@ -35,6 +34,7 @@
                     <input type="password" v-model="pass" id="pass" requried />
                 </div>
             </div>
+
             <button type="submit" class="btn btn-warning">Submit</button>
         </form>
         
